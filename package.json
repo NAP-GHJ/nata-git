@@ -1,0 +1,24 @@
+{
+  "name": "nata-git",
+  "version": "1.0.4",
+  "description": "A javascript implementation of Git ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Ghj",
+  "license": "ISC",
+  "devDependencies": {
+    "gen-run": "^0.1.2",
+    "js-github": "^1.0.0"
+  },
+  "dependencies": {
+    "gen-run": "^0.1.2",
+    "js-github": "^1.0.0"
+  }
+}
