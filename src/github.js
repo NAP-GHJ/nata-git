@@ -9,7 +9,7 @@ var githubName = "NAP-GHJ/GithubDatabase";
 
 // Your user can generate these manually at https://github.com/settings/tokens/new
 // Or you can use an oauth flow to get a token for the user.
-var githubToken = "d56209d009a20999ed2d673a719fd4f79b812352";
+var githubToken = "69a9cbf09ee1dd957621f56616efcd2f94cfe0d9";
 
 // Mixin the main library using github to provide the following:
 // - repo.loadAs(type, hash) => value
@@ -46,75 +46,6 @@ require('js-git/mixins/formats')(repo);
 // See js-git main docs for more details.
 var run = require('gen-run');
 
-
-/*run(function* () {
-	var headHash = yield repo.readRef("refs/heads/master");
-	var commit = yield repo.loadAs("commit", headHash);
-	var tree = yield repo.loadAs("tree", commit.tree);
-	var entry = tree["README.md"];
-	//console.log('tree'+tree);
-	//console.log('entry'+entry);
-	var readme = yield repo.loadAs("text", entry.hash);
-	console.log("readme "+readme);
-	
-	// Build the updates array
-	var updates = [
-	{
-		path: "README.md", // Update the existing entry
-		mode: entry.mode,  // Preserve the mode (it might have been executible)
-		content: readme.toUpperCase() // Write the new content
-	}
-	];
-
-	// Based on the existing tree, we only want to update, not replace.
-	updates.base = commit.tree;
-
-// Create the new file and the updated tree.
-	var treeHash = yield repo.createTree(updates);
-
-	var tree = yield repo.loadAs("tree", treeHash);
-	var entry = tree["README.md"];
-//  console.log('tree'+tree);
-//  console.log('entry'+entry);
-	var readme = yield repo.loadAs("text", entry.hash);
-	console.log("readme"+readme);
-
-	console.log('headHash '+headHash);
-
-//saveAs
-	var blobHash = yield repo.saveAs("blob", "Hello World\n");
-	var treeHash = yield repo.saveAs("tree", {
-	"subfolder/greeting.txt": { mode: modes.file, hash: blobHash }
-	});
-
-	var commitHash = yield repo.saveAs("commit", {
-	tree: treeHash,
-	author: {
-		name: "NAP-GHJ",
-		email: "18052095653@189.cn"
-	},
-	parent: headHash,
-	message: "Change README.md to be all uppercase using js-github\n"
-	});
-
-	console.log(commitHash);
-
-
-	// Now we can browse to this commit by hash, but it's still not in master.
-	// We need to update the ref to point to this new commit.
- // console.log("COMMIT", commitHash)
-
-	// Save it to a new branch (Or update existing one)
-	var new_hash = yield repo.updateRef("refs/heads/master", commitHash);
-
-	// And delete this new branch:
-	//yield repo.deleteRef("refs/heads/new-bran");
-
-
-
-});*/
-
-
 //Git commit a file : filePath ,fileContent ,describe
 var gitCommit = function ( filePath , fileContent, describe){
 run(function*(){
@@ -136,9 +67,9 @@ run(function*(){
 	updates.base = commit.tree;
 
 	// Create the new file and the updated tree.
-		var treeHash = yield repo.createTree(updates);
+	var treeHash = yield repo.createTree(updates);
 		
-		var commitHash = yield repo.saveAs("commit", {
+	var commitHash = yield repo.saveAs("commit", {
 		tree: treeHash,
 		author: {
 			name: "NAP-GHJ",
@@ -146,17 +77,17 @@ run(function*(){
 		},
 		parent: headHash,
 		message: describe
-		});
+	});
 
-		//console.log(commitHash);
+	//console.log(commitHash);
 
 
 	// Now we can browse to this commit by hash, but it's still not in master.
 	// We need to update the ref to point to this new commit.
 
 
-		// Save it to a new branch (Or update existing one)
-		var new_hash = yield repo.updateRef("refs/heads/master", commitHash);
+	// Save it to a new branch (Or update existing one)
+	var new_hash = yield repo.updateRef("refs/heads/master", commitHash);
 });
 }
 
@@ -175,20 +106,20 @@ run(function*(){
 	var found = 0;
 	while (commit = yield logStream.read(), commit !== undefined, found == 0) {
 
-	  //console.log(commit);
+	 	//console.log(commit);
 
-	  // We can also loop through all the files of each commit version.
-	  var treeStream = yield repo.treeWalk(commit.tree);
-	  while (object = yield treeStream.read(), object !== undefined) {
-	    //console.log(object);
-	    if(object.mode === modes.file  && object.path === filePath){
-	    	console.log(object);
-	    	found = 1;
-	    	var fileContent = yield repo.loadAs("text", object.hash);
-		console.log("The file content  is \n"+fileContent);
-	    	break;
-	    }
-	  }
+		// We can also loop through all the files of each commit version.
+	  	var treeStream = yield repo.treeWalk(commit.tree);
+	  	while (object = yield treeStream.read(), object !== undefined) {
+	    		//console.log(object);
+	    		if(object.mode === modes.file  && object.path === filePath){
+	    			console.log(object);
+	    			found = 1;
+	    			var fileContent = yield repo.loadAs("text", object.hash);
+				console.log("The file content  is \n"+fileContent);
+	    			break;
+	    		}
+	  	}
 
 	}
 
@@ -196,7 +127,8 @@ run(function*(){
 });
 }
 
-gitLoad("/src/test.txt");
+//gitCommit("src/subSrc/subSrc/test.txt","Test commit \n","Nothing\n");
+//gitLoad("/src/subSrc/subSrc/test.txt");
 
 exports.gitLoad = gitLoad;
 exports.gitCommit = gitCommit;
